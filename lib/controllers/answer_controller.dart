@@ -3,7 +3,6 @@ class AnswerController {
   String answer;
 
   AnswerController(this.id_question, this.answer);
-  
 
   @override
   String toString() {

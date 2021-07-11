@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:abpgasmed/components/centered_circular_progress.dart';
 import 'package:abpgasmed/components/centered_message.dart';
 import 'package:abpgasmed/components/finish_dialog.dart';
-import 'package:abpgasmed/components/result_dialog.dart';
+// import 'package:abpgasmed/components/result_dialog.dart';
 
 class QuizPage extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   final _controller = QuizController();
   List<Widget> _scoreKeeper = [];
-  List<AnswerController> _answers = [];
+  var _answers = Map();
 
   bool _loading = true;
 
@@ -141,22 +141,24 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ),
             onTap: () {
-              bool correct = _controller.correctAnswer(answer);
 
               setState(() {
-                _scoreKeeper.add(
-                  Icon(
-                    correct ? Icons.check : Icons.close,
-                  ),
-                );
-                if (_answers.contains(AnswerController(index, answer))) {
-                  _answers.insert(index, AnswerController(index, answer) );
-                }else {
-                  _answers.add(AnswerController(index, answer));
-                }
                 
+                if (_answers.containsKey(index)) {
+                  _answers[index] = answer;
+                } else{
+                  _answers[index] = answer;
+                };
+
+                // if (_answers.contains(AnswerController(index))) {
+                //   _answers.insert(index, AnswerController(index, answer));
+                // } else {
+                //   _answers.add(AnswerController(index, answer));
+                // }
+
                 print(_answers);
-                if (_scoreKeeper.length < _controller.questionsNumber) {
+                print(_answers.length);
+                if (_answers.length < _controller.questionsNumber) {
                   _controller.nextQuestion();
                 } else {
                   FinishDialog.show(context,
