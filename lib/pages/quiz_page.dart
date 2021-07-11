@@ -37,7 +37,7 @@ class _QuizPageState extends State<QuizPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Colors.green,
+        backgroundColor: Colors.green,
         title: Text(
             'Quiz ( ${1 + _controller.getIndex()}/${_controller.questionsNumber} )'),
         centerTitle: true,
@@ -149,12 +149,6 @@ class _QuizPageState extends State<QuizPage> {
                 } else{
                   _answers[index] = answer;
                 };
-
-                // if (_answers.contains(AnswerController(index))) {
-                //   _answers.insert(index, AnswerController(index, answer));
-                // } else {
-                //   _answers.add(AnswerController(index, answer));
-                // }
 
                 print(_answers);
                 print(_answers.length);
