@@ -1,3 +1,4 @@
+import 'package:abpgasmed/controllers/answer_controller.dart';
 import 'package:abpgasmed/controllers/quiz_controller.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   final _controller = QuizController();
   List<Widget> _scoreKeeper = [];
+  List<AnswerController> _answers = [];
 
   bool _loading = true;
 
@@ -37,7 +39,7 @@ class _QuizPageState extends State<QuizPage> {
       appBar: AppBar(
         // backgroundColor: Colors.green,
         title: Text(
-            'Quiz ( ${_scoreKeeper.length}/${_controller.questionsNumber} )'),
+            'Quiz ( ${1 + _controller.getIndex()}/${_controller.questionsNumber} )'),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -69,10 +71,13 @@ class _QuizPageState extends State<QuizPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         _buildQuestion(_controller.getQuestion()),
-        _buildAnswerButton(_controller.getAnswer1(), Colors.green.shade800),
-        _buildAnswerButton(_controller.getAnswer2(), Colors.red.shade700),
-        _buildAnswerButton(_controller.getAnswer3(), Colors.grey.shade500),
-        _buildScoreKeeper(_controller.getAnswer1()),
+        _buildAnswerButton(_controller.getAnswer1(), Colors.green.shade800,
+            _controller.getIndex()),
+        _buildAnswerButton(_controller.getAnswer2(), Colors.red.shade700,
+            _controller.getIndex()),
+        _buildAnswerButton(_controller.getAnswer3(), Colors.grey.shade500,
+            _controller.getIndex()),
+        _buildScoreKeeper(),
       ],
     );
   }
@@ -109,7 +114,7 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  _buildAnswerButton(String answer, Color cor) {
+  _buildAnswerButton(String answer, Color cor, int index) {
     return Expanded(
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 3.0),
@@ -138,28 +143,28 @@ class _QuizPageState extends State<QuizPage> {
             onTap: () {
               bool correct = _controller.correctAnswer(answer);
 
-              ResultDialog.show(
-                context,
-                question: _controller.question,
-                correct: correct,
-                onNext: () {
-                  setState(() {
-                    _scoreKeeper.add(
-                      Icon(
-                        correct ? Icons.check : Icons.close,
-                      ),
-                    );
-
-                    if (_scoreKeeper.length < _controller.questionsNumber) {
-                      _controller.nextQuestion();
-                    } else {
-                      FinishDialog.show(context,
-                          hitNumber: _controller.hitNumber,
-                          questionNumber: _controller.questionsNumber);
-                    }
-                  });
-                },
-              );
+              setState(() {
+                _scoreKeeper.add(
+                  Icon(
+                    correct ? Icons.check : Icons.close,
+                  ),
+                );
+                if (_answers.contains(AnswerController(index, answer))) {
+                  _answers.insert(index, AnswerController(index, answer) );
+                }else {
+                  _answers.add(AnswerController(index, answer));
+                }
+                
+                print(_answers);
+                if (_scoreKeeper.length < _controller.questionsNumber) {
+                  _controller.nextQuestion();
+                } else {
+                  FinishDialog.show(context,
+                      hitNumber: _controller.hitNumber,
+                      questionNumber: _controller.questionsNumber);
+                }
+              });
+              // Resu
             },
           ),
         ),
@@ -167,7 +172,7 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  _buildScoreKeeper(String answer) {
+  _buildScoreKeeper() {
     return Padding(
       padding: const EdgeInsets.all(25.0),
       child: Container(
@@ -184,8 +189,6 @@ class _QuizPageState extends State<QuizPage> {
               icon: Icon(Icons.arrow_back),
               onPressed: () {
                 setState(() {
-                  _scoreKeeper.removeLast();
-
                   if (_scoreKeeper.length < _controller.questionsNumber &&
                       _scoreKeeper.length >= 0) {
                     _controller.prevQuestion();
@@ -197,8 +200,6 @@ class _QuizPageState extends State<QuizPage> {
               icon: Icon(Icons.arrow_forward),
               onPressed: () {
                 setState(() {
-                  _scoreKeeper.add(Icon(Icons.check));
-
                   if (_scoreKeeper.length < _controller.questionsNumber) {
                     _controller.nextQuestion();
                   } else {

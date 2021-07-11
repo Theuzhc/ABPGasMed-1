@@ -30,6 +30,10 @@ class QuizController {
     return _questionBank[questionIndex].question;
   }
 
+  int getIndex() {
+    return questionIndex;
+  }
+
   String getAnswer1() {
     return _questionBank[questionIndex].answer1;
   }
