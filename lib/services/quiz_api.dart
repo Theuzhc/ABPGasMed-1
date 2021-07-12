@@ -7,7 +7,7 @@ class QuizApi {
   static Future<List<Question>> fetch() async {
     try {
       var url =
-          'https://script.google.com/macros/s/AKfycbysRkcJ3PyCWhUvWq8GrimO-0K6BC-OVn4AWABxpWwFqdJEaCQXDrG_K6eV2I0PkUGU/exec';
+          'https://script.google.com/macros/s/AKfycbzkvezkSPtIoPk-BD-bLP-9nTCEql8i7VArstvESX8L1yOybp63Qfj6ptuG-zoI2P2T/exec';
       var response = await http.get(url);
 
       if (response.statusCode == 200) {

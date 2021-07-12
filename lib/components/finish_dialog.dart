@@ -1,17 +1,20 @@
+import 'package:abpgasmed/pages/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:abpgasmed/pages/quiz_page.dart';
 import 'package:share/share.dart';
 
+final String hit = '';
 class FinishDialog {
   static Future show(
     BuildContext context, {
-    @required int hitNumber,
+    @required double hitNumber,
     @required int questionNumber,
   }) {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
+      
       builder: (context) {
         return AlertDialog(
           backgroundColor: Colors.grey.shade900,
@@ -29,9 +32,12 @@ class FinishDialog {
             ),
           ),
           content: Column(
+            
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+              
+
               Text(
                 'Parabéns',
                 style: TextStyle(
@@ -42,39 +48,54 @@ class FinishDialog {
               ),
               const SizedBox(height: 8),
               Text(
-                'Você acertou $hitNumber de $questionNumber!',
+                'Você acertou ${(hitNumber*100).toStringAsFixed(2)}% de $questionNumber questões!',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
-              Text(
-                'Que tal tentar mais uma vez? Quem sabe você consegue acertar todas na próxima!',
-                style: TextStyle(
-                  color: Colors.white70,
-                ),
-              ),
             ],
           ),
           actions: [
             FlatButton(
-              child: const Text('COMPARTILHAR'),
+              child: const Text(
+                'COMPARTILHAR',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
               onPressed: () {
-                Share.share('Quiz ABPGÁSMED. Você acertou $hitNumber de $questionNumber!');
+                Share.share(
+                    'Quiz ABPGÁSMED. Você acertou ${hitNumber} de $questionNumber questões!');
               },
             ),
             FlatButton(
-              child: const Text('JOGAR NOVAMENTE'),
+              child: const Text(
+                'VER RESULTADOS',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => QuizPage()),
+                  MaterialPageRoute(
+                      builder: (context) => Conformidade(value: hitNumber)),
                 );
               },
             ),
             FlatButton(
-              child: const Text('SAIR'),
+              child: const Text(
+                'SAIR',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
               onPressed: () {
                 SystemNavigator.pop();
               },

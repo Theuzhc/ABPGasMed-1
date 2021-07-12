@@ -1,5 +1,5 @@
 import 'package:abpgasmed/pages/quiz_page.dart';
-import 'package:abpgasmed/pages/result_page.dart';
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());

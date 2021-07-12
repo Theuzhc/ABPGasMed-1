@@ -1,5 +1,6 @@
 import 'package:abpgasmed/controllers/answer_controller.dart';
 import 'package:abpgasmed/controllers/quiz_controller.dart';
+import 'package:abpgasmed/pages/result_page.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:abpgasmed/components/centered_circular_progress.dart';
@@ -141,22 +142,26 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ),
             onTap: () {
-
               setState(() {
-                
                 if (_answers.containsKey(index)) {
                   _answers[index] = answer;
-                } else{
+                } else {
                   _answers[index] = answer;
-                };
+                }
+                ;
 
                 print(_answers);
                 print(_answers.length);
                 if (_answers.length < _controller.questionsNumber) {
                   _controller.nextQuestion();
                 } else {
+                  int cont = 0;
+                  for (int i = 0; i < _answers.length; i++) {
+                    if (_answers[i] == 'Sim') ++cont;
+                  }
+                  double perc = cont / _answers.length;
                   FinishDialog.show(context,
-                      hitNumber: _controller.hitNumber,
+                      hitNumber: perc,
                       questionNumber: _controller.questionsNumber);
                 }
               });
@@ -200,7 +205,7 @@ class _QuizPageState extends State<QuizPage> {
                     _controller.nextQuestion();
                   } else {
                     FinishDialog.show(context,
-                        hitNumber: _controller.hitNumber,
+                        hitNumber: _controller.hitNumber.toDouble(),
                         questionNumber: _controller.questionsNumber);
                   }
                 });

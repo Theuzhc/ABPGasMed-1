@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
 class Conformidade extends StatelessWidget {
+  final double value;
+
+  Conformidade({Key key, @required this.value}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Percentual de Conformidades'),
+          title: Text('Percentual de Conformidades '),
           centerTitle: true,
           elevation: 0.0,
         ),
@@ -18,7 +21,8 @@ class Conformidade extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text(
-                    'Hospital Universitário',
+                    "Hospital Universitário",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       height: 1,
                       fontSize: 50,
@@ -37,10 +41,10 @@ class Conformidade extends StatelessWidget {
                   width: 150,
                   child: CircularProgressIndicator(
                     backgroundColor: Colors.white,
-                    semanticsValue: '50.3%',
+                    semanticsValue: value.toString(),
                     semanticsLabel: 'Conformidades',
-                    strokeWidth: 60,
-                    value: 0.58, // receber porcentagem da pg anterior
+                    strokeWidth: 40,
+                    value: value, // receber porcentagem da pg anterior
                   ),
                 ),
               ),
@@ -53,14 +57,29 @@ class Conformidade extends StatelessWidget {
                     Icon(Icons.dangerous),
                     Text(
                       'Verificar inconformidades',
-                      style: TextStyle(height: 1, fontSize: 20),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(height: 1, fontSize: 22),
                     ),
                   ],
                 ),
               ),
             ),
-            Row(),
-            Row(),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: Row(
+                  
+                  children: [
+                    Icon(Icons.auto_graph),
+                    Text(
+                      'Evolução',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(height: 1, fontSize: 25),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ));
   }
