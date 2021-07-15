@@ -5,16 +5,20 @@ import 'package:abpgasmed/pages/quiz_page.dart';
 import 'package:share/share.dart';
 
 final String hit = '';
+var answers = Map();
+
 class FinishDialog {
   static Future show(
     BuildContext context, {
-    @required double hitNumber,
+    @required int hitNumber,
     @required int questionNumber,
+    @required answers,
+    @required String hospital,
+    @required String name,
   }) {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
-      
       builder: (context) {
         return AlertDialog(
           backgroundColor: Colors.grey.shade900,
@@ -27,19 +31,16 @@ class FinishDialog {
             backgroundColor: Colors.green,
             maxRadius: 35.0,
             child: Icon(
-              hitNumber < 6 ? Icons.warning : Icons.favorite,
+              Icons.favorite,
               color: Colors.grey.shade900,
             ),
           ),
           content: Column(
-            
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              
-
               Text(
-                'Parabéns',
+                'Parabéns, $name!',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -48,7 +49,7 @@ class FinishDialog {
               ),
               const SizedBox(height: 8),
               Text(
-                'Você acertou ${(hitNumber*100).toStringAsFixed(2)}% de $questionNumber questões!',
+                'Você acertou $hitNumber de $questionNumber questões!',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -69,7 +70,7 @@ class FinishDialog {
               ),
               onPressed: () {
                 Share.share(
-                    'Quiz ABPGÁSMED. Você acertou ${hitNumber} de $questionNumber questões!');
+                    'Quiz ABPGÁSMED. Você acertou $hitNumber de $questionNumber questões!');
               },
             ),
             FlatButton(
@@ -84,7 +85,11 @@ class FinishDialog {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Conformidade(value: hitNumber)),
+                      builder: (context) => Conformidade(
+                            answers: answers,
+                            hospital: hospital,
+                            name: name,
+                          )),
                 );
               },
             ),
